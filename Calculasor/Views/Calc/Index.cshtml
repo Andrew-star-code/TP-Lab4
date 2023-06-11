@@ -1,0 +1,80 @@
+﻿@model Calculasor.Models.Calc
+
+@{
+    Layout = "~/Views/_CalcLayout.cshtml";
+}
+
+@section Header {
+    <div class="view">
+        <p>
+            Заданное значение =  @ViewBag.Compare
+        </p>
+
+        @if (ViewBag.Result != null)
+        {
+            if (ViewBag.Compare == ViewBag.Result)
+            {
+                <div>Результат равен заданному</div>
+
+            }
+            else
+            {
+                <div>Результат не равен заданному</div>
+            }
+        }
+
+
+    </div>
+}
+<!DOCTYPE html>
+<meta name="viewport" content="width=device-width" />
+<title>Index</title>
+
+<body>
+    <h2>Calculator</h2>
+    <div>
+
+        @using (Html.BeginForm("Index", "Calc", FormMethod.Post))
+        {
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+            <p>
+                @Html.LabelFor(m => m.Operand1)
+                @Html.TextBox("Operand1", "")
+                @Html.ValidationMessageFor(Calc => Calc.Operand1, "", new { @class = "text-danger" })
+            </p>
+
+            <p>
+                @Html.LabelFor(m => m.Operation)
+                @Html.DropDownList("Operation", new List<SelectListItem>
+                {
+                    new SelectListItem { Text = "+", Value = "+", Selected=true},
+                    new SelectListItem { Text = "-", Value = "-"},
+                    new SelectListItem { Text = "/", Value = "/"},
+                    new SelectListItem { Text = "*", Value = "*"}
+                }, "Select Operation")
+
+            </p>
+
+            <p>
+                @Html.LabelFor(m => m.Operand2)
+                @Html.TextBox("Operand2", "")
+                @Html.ValidationMessageFor(Calc => Calc.Operand2, "", new { @class = "text-danger" })
+            </p>
+
+
+
+            <p>
+                @Html.LabelFor(m => m.Result)
+                @ViewBag.Result
+            </p>
+
+            <button name="actionButton" value="Calc">Вычислить</button>
+            <button name="actionButton" value="Cleanup">Прибирання</button>
+
+            <p> @Html.ActionLink("Message of the day", "ActionView", "Calc")</p>
+        }
+    </div>
+</body>
